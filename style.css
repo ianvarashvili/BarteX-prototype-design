@@ -520,3 +520,48 @@ background-color: #80cafc6e;
     70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(193, 18, 31, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(193, 18, 31, 0); }
 }
+
+.verified-badge-shield {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #00695c 0%, #004d40 100%);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 2px 2px 0px #003d33;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.verified-badge-shield::before {
+    content: "🛡️";
+    font-size: 0.85rem;
+}
+
+.verified-badge-star {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #FFD700;
+    color: #003049;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 3px 3px 0px #B8860B;
+    margin-left: 6px;
+    vertical-align: middle;
+    border: 2px solid #FFA500;
+}
+
+.verified-badge-star::before {
+    content: "⭐";
+    font-size: 0.9rem;
+}

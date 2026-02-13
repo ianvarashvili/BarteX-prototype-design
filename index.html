@@ -5,6 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BarteX | Prototype</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 8px 35px 8px 12px;
+            border: 2px solid #003049;
+            background: #ffeedd;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .filter-select:hover {
+            background: #fff;
+            border-color: #C1121F;
+        }
+
+        .filter-select:focus {
+            border-color: #C1121F;
+            background: #fff;
+        }
+
+        .filter-badge {
+            padding: 8px 16px;
+            background: transparent;
+            border: 2px solid #003049;
+            color: #003049;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .filter-badge:hover {
+            background: #003049;
+            color: white;
+        }
+
+        .filter-badge.active {
+            background: #C1121F;
+            border-color: #C1121F;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filter-select {
+                flex: 1;
+                margin-left: 10px;
+            }
+
+            .filter-badge {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -15,7 +102,7 @@
             <button class="nav-btn" onclick="location.href='index.html'">Testimonials</button>
             <button class="nav-btn" onclick="showWishlist()">My Wishlist</button>
             <a href="premium.html" class="nav-btn" style="text-decoration: none;">Premium</a>
-            <a href="signup.html" class="nav-btn" style="text-decoration: none;">Sign Up</a>
+            <a href="signup-final.html" class="nav-btn" style="text-decoration: none;">Sign Up</a>
             <button class="btn-cta" onclick="alert('Opens Create Listing Page')">+ Post Item</button>
         </div>
     </nav>
@@ -24,9 +111,52 @@
         <h1>Trade what you have,<br>Bid on what you want.</h1>
         <p>The secure marketplace for bartering and auctions.</p>
         <div class="search-box" style="margin-bottom: 20px;">
-    <input type="text" placeholder="Search for items or authors..." 
-           style="width: 100%; max-width: 500px; padding: 15px; border-radius: 30px; border: 2px solid #003049; outline: none;">
-</div>
+            <input type="text" placeholder="Search for items or authors..." 
+                   style="width: 100%; max-width: 500px; padding: 15px; border-radius: 30px; border: 2px solid #003049; outline: none;">
+        </div>
+
+        <!-- Filter Options -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: #003049; margin-right: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Category:</label>
+                <select class="filter-select">
+                    <option>All Categories</option>
+                    <option>Electronics</option>
+                    <option>Furniture</option>
+                    <option>Fashion</option>
+                    <option>Collectibles</option>
+                    <option>Sports & Outdoors</option>
+                    <option>Home & Garden</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: #003049; margin-right: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Price:</label>
+                <select class="filter-select">
+                    <option>Any Price</option>
+                    <option>Under ₾50</option>
+                    <option>₾50 - ₾100</option>
+                    <option>₾100 - ₾250</option>
+                    <option>₾250 - ₾500</option>
+                    <option>Over ₾500</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label style="font-size: 0.8rem; font-weight: 700; color: #003049; margin-right: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Sort:</label>
+                <select class="filter-select">
+                    <option>Most Recent</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Ending Soon</option>
+                    <option>Most Popular</option>
+                </select>
+            </div>
+
+            <button class="filter-badge" onclick="this.classList.toggle('active')">
+                ⚡ Verified Only
+            </button>
+        </div>
         
         <div class="toggle-container">
             <button class="toggle-btn active" data-filter="all" onclick="filterItems('all')">View All</button>
@@ -62,7 +192,7 @@
                 <div class="card-body">
                     <span class="badge badge-barter">Barter Trade</span>
                     <div class="wants-label">Author Wants: <strong>Laptop or Ipad</strong></div>
-                    <h3>Giving Away: Electric Guitar <span title="Verified User" style="color: #4CC9FE; cursor: help;">✔</span></h3>
+                    <h3>Electric Guitar <span class="verified-badge-shield">Verified</span></h3>
                     <div class="details">
                         <p class="timer">Market Value: ~₾280.00</p>
                     </div>
@@ -77,7 +207,7 @@
                 </div>
                 <div class="card-body">
                     <span class="badge badge-auction">Auction</span>
-                    <h3>Limited Boots</h3>
+                    <h3>Limited Boots <span class="verified-badge-star">Top Seller</span></h3>
                     <div class="details">
                         <p class="min-price">Starting Bid: ₾45.00</p>
                         <p class="price-tag2">Current Bid: ₾80.00</p>
@@ -143,7 +273,7 @@
                 </div>
                 <div class="card-body">
                     <span class="badge badge-auction">Auction</span>
-                    <h3>Vintage Desk</h3>
+                    <h3>Vintage Desk<span class="verified-badge-shield">Verified</span></h3>
                     <div class="details">
                         <p class="min-price">Starting Bid: ₾110.00</p>
                         <p class="price-tag2">Current Bid: ₾200.00</p>

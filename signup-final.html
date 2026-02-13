@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join BarteX | Secure Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Progress Indicator - Minimal & Clean */
+        .progress-wrapper {
+            max-width: 480px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: #003049;
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: #C1121F;
+            transition: width 0.4s ease;
+        }
+
+        .step {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ffeedd;
+            border: 2px solid #003049;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #003049;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            background: #C1121F;
+            color: white;
+            border-color: #C1121F;
+        }
+
+        .step.completed .step-circle {
+            background: #003049;
+            color: white;
+            border-color: #003049;
+        }
+
+        .step.completed .step-circle::before {
+            content: "✓";
+        }
+
+        .step-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #003049;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step.active .step-label {
+            color: #C1121F;
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        /* Security Badge */
+        .security-note {
+            background: #e8f5e9;
+            border-left: 3px solid #00695c;
+            padding: 12px;
+            margin: 20px 0;
+            font-size: 0.8rem;
+            color: #003049;
+        }
+
+        .security-note strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Password Strength */
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 6px 0;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+        }
+
+        .strength-fill.weak { width: 33%; background: #C1121F; }
+        .strength-fill.medium { width: 66%; background: #EE6C4D; }
+        .strength-fill.strong { width: 100%; background: #00695c; }
+
+        .strength-text {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Verification Code */
+        .code-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .code-input {
+            width: 45px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border: 1px solid #003049;
+            background: #fdf0d5;
+            outline: none;
+        }
+
+        .code-input:focus {
+            border-color: #C1121F;
+            background: #fff;
+        }
+
+        /* Navigation Buttons */
+        .step-navigation {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-back {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            color: #003049;
+            border: 2px solid #003049;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: #003049;
+            color: white;
+        }
+
+        .btn-next {
+            flex: 2;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #ffeedd;
+            border: 1px solid #003049;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 0.8rem;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0;
+        }
+
+        .checklist li {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            color: #00695c;
+            font-weight: bold;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #003049;
+            background: #fdf0d5;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: #ffeedd;
+            border-color: #C1121F;
+        }
+
+        .upload-area::before {
+            content: "📄";
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            display: inline-block;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ddd;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #C1121F;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #ffeedd;
+            border: 1px solid #003049;
+            margin: 10px 0;
+        }
+
+        .feature-item strong {
+            display: block;
+            font-size: 0.85rem;
+        }
+
+        .feature-item small {
+            font-size: 0.7rem;
+            color: #666;
+            display: block;
+            margin-top: 3px;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: #e8f5e9;
+            border: 1px solid #00695c;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .success-box strong {
+            color: #00695c;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        /* Select */
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #003049;
+            background: #fdf0d5;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #C1121F;
+            background: #fff;
+        }
+
+        .resend-link {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 0.85rem;
+        }
+
+        .resend-link a {
+            color: #C1121F;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+    <nav>
+        <div class="logo" onclick="location.href='index.html'" style="cursor:pointer">Barte<span style="color: #fdf0d5">X</span></div>
+        <div class="nav-links">
+            <button class="nav-btn" onclick="location.href='index.html'">Back to Browse</button>
+        </div>
+    </nav>
+
+    <div class="auth-container" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <!-- Progress Indicator -->
+        <div class="progress-wrapper">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <div class="step active" id="step1Indicator">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Account</div>
+                </div>
+                <div class="step" id="step2Indicator">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Security</div>
+                </div>
+                <div class="step" id="step3Indicator">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Verify</div>
+                </div>
+                <div class="step" id="step4Indicator">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Identity</div>
+                </div>
+                <div class="step" id="step5Indicator">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">Done</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-box">
+            <div class="auth-content">
+                
+                <!-- STEP 1: Basic Information -->
+                <div class="form-step active" id="step1">
+                    <h2>Create Your Account</h2>
+                    <p>Join the premier marketplace for collectors and traders.</p>
+                    
+                    <div class="security-note">
+                        <strong>🔒 Secure Registration</strong>
+                        Your information is protected with 256-bit SSL encryption.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fullName" placeholder="e.g. Nodar Sirbiladze" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="email" placeholder="name@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+995 555 123 456" required>
+                        <small style="color: #666; font-size: 0.75rem; display: block; margin-top: 5px;">Required for account recovery and security alerts</small>
+                    </div>
+
+                    <div class="step-navigation">
+                        <button type="button" class="btn-next btn-auth-submit" onclick="nextStep(2)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Security Setup -->
+                <div class="form-step" id="step2">
+                    <h2>Set Up Security</h2>
+                    <p>Create a strong password to protect your account.</p>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="••••••••" oninput="checkPasswordStrength(this.value)">
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Password must include:</strong>
+                        <ul class="checklist">
+                            <li>At least 8 characters</li>
+                            <li>Uppercase and lowercase letters</li>
+                            <li>At least one number</li>
+                            <li>Special character (!@#$%)</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="••••••••">
+                    </div>
+
+                    <div class="feature-item">
+                        <div>
+                            <strong>Two-Factor Authentication</strong>
+                            <small>Add extra security to your account</small>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="twoFactorToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="step-navigation">
+                        <button type="button" class="btn-back" onclick="prevStep(1)">Back</button>
+                        <button type="button" class="btn-next btn-auth-submit" onclick="nextStep(3)">Continue</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Email Verification -->
+                <div class="form-step" id="step3">
+                    <h2>Verify Your Email</h2>
+                    <p>Enter the 6-digit code sent to <strong id="displayEmail" style="color: #C1121F;">your email</strong></p>
+
+                    <div class="code-inputs">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 1)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 2)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 3)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 4)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 5)">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 6)">
+                    </div>
+
+                    <div class="resend-link">
+                        <a href="#">Didn't receive the code? Resend</a>
+                    </div>
+
+                    <div class="security-note">
+                        This helps us verify that you're a real person and protect against fraud.
+                    </div>
+
+                    <div class="step-navigation">
+                        <button type="button" class="btn-back" onclick="prevStep(2)">Back</button>
+                        <button type="button" class="btn-next btn-auth-submit" onclick="nextStep(4)">Verify</button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Identity Verification -->
+                <div class="form-step" id="step4">
+                    <h2>Identity Verification</h2>
+                    <p>Upload a government-issued ID to verify your account.</p>
+
+                    <div class="info-box">
+                        <strong>Why we need this:</strong>
+                        Identity verification helps prevent fraud and creates a trusted marketplace for all users.
+                    </div>
+
+                    <div class="form-group">
+                        <label>Document Type</label>
+                        <select>
+                            <option>National ID Card</option>
+                            <option>Passport</option>
+                            <option>Driver's License</option>
+                        </select>
+                    </div>
+
+                    <div class="upload-area" onclick="alert('File upload dialog would open here')">
+                        <strong>Click to upload or drag and drop</strong>
+                        <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+                            JPG, PNG or PDF • Max 5MB
+                        </div>
+                    </div>
+
+                    <div class="security-note">
+                        <strong>🔒 Your Privacy is Protected</strong>
+                        Documents are encrypted and only used for verification purposes.
+                    </div>
+
+                    <div class="terms">
+                        <input type="checkbox" id="agree" required>
+                        <label for="agree">I agree to the <a href="#">Terms of Service</a></label>
+                    </div>
+
+                    <div class="step-navigation">
+                        <button type="button" class="btn-back" onclick="prevStep(3)">Back</button>
+                        <button type="button" class="btn-next btn-auth-submit" onclick="nextStep(5)">Submit</button>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Success -->
+                <div class="form-step" id="step5">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 5rem; margin-bottom: 20px;">✓</div>
+                        <h2 style="color: #00695c;">Account Created!</h2>
+                        <p>Your account is being reviewed. We'll send you an email within 24-48 hours.</p>
+                        
+                        <div class="success-box">
+                            <strong>What's Next?</strong>
+                            <ul class="checklist" style="text-align: left;">
+                                <li>We'll verify your identity (24-48 hours)</li>
+                                <li>You'll receive confirmation via email</li>
+                                <li>Browse items immediately</li>
+                                <li>Full access after verification</li>
+                            </ul>
+                        </div>
+
+                        <button type="button" class="btn-auth-submit" onclick="alert('Going to dashboard...'); location.href='index.html'">
+                            Go to Dashboard
+                        </button>
+
+                        <p class="switch-link">Already have an account? <a href="#">Login here</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.remove('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.add('completed');
+            
+            currentStep = step;
+            document.getElementById('step' + currentStep).classList.add('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.add('active');
+            
+            const progress = ((currentStep - 1) / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            if (step === 3) {
+                const email = document.getElementById('email').value || 'your email';
+                document.getElementById('displayEmail').textContent = email;
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.remove('active');
+            
+            currentStep = step;
+            document.getElementById('step' + currentStep).classList.add('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.add('active');
+            document.getElementById('step' + currentStep + 'Indicator').classList.remove('completed');
+            
+            const progress = ((currentStep - 1) / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[!@#$%^&*]/.test(password)) strength++;
+            
+            strengthFill.className = 'strength-fill';
+            
+            if (strength <= 1) {
+                strengthFill.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = '#C1121F';
+            } else if (strength <= 3) {
+                strengthFill.classList.add('medium');
+                strengthText.textContent = 'Medium strength';
+                strengthText.style.color = '#EE6C4D';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.textContent = 'Strong password';
+                strengthText.style.color = '#00695c';
+            }
+        }
+
+        function moveToNext(input, index) {
+            if (input.value.length === 1 && index < 6) {
+                const nextInput = input.parentElement.children[index];
+                nextInput.focus();
+            }
+        }
+    </script>
+</body>
+</html>
